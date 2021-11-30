@@ -1,21 +1,47 @@
 .Checker {
-    position: relative;
-    z-index: 5;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    
-   overflow: hidden;
-    cursor: grab;
-    border: 1px solid transparent;
-    box-shadow: inset 4px 4px 6px rgba(0,0,0,0.5), inset -4px -4px 6px rgba(0,0,0,0.5);
+  position: relative;
+  z-index: 5;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+
+  overflow: hidden;
+  cursor: grab;
+  border: 1px solid transparent;
+  box-shadow: inset 4px 4px 6px rgba(0, 0, 0, 0.5),
+    inset -4px -4px 6px rgba(0, 0, 0, 0.5);
 }
 
 .Dark {
-    background-color: rgb(128, 90, 90);
+  background-color: rgb(128, 90, 90);
 }
 
 .White {
-    background-color: white;
+  background-color: white;
 }
 
+.gavno {
+  border: 1px solid rgba(20, 20, 20, 0.387) !important;
+  opacity: 0.8 !important;
+}
+
+.hide {
+  display: none;
+}
+
+.hovered {
+  position: relative;
+}
+
+.hovered::after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  opacity: 0.6;
+  border-radius: 50%;
+  background-color: gray;
+  box-shadow: inset 4px 4px 6px rgba(105, 92, 92, 0.5),
+    inset -4px -4px 6px rgba(0, 0, 0, 0.5) !important;
+}
