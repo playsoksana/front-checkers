@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/front-checkers/static/css/main.6b5f2569.chunk.css",
+    "main.js": "/front-checkers/static/js/main.1ea9cdd2.chunk.js",
+    "main.js.map": "/front-checkers/static/js/main.1ea9cdd2.chunk.js.map",
+    "runtime-main.js": "/front-checkers/static/js/runtime-main.ee831e8b.js",
+    "runtime-main.js.map": "/front-checkers/static/js/runtime-main.ee831e8b.js.map",
+    "static/js/2.8a159189.chunk.js": "/front-checkers/static/js/2.8a159189.chunk.js",
+    "static/js/2.8a159189.chunk.js.map": "/front-checkers/static/js/2.8a159189.chunk.js.map",
+    "static/js/3.baef554f.chunk.js": "/front-checkers/static/js/3.baef554f.chunk.js",
+    "static/js/3.baef554f.chunk.js.map": "/front-checkers/static/js/3.baef554f.chunk.js.map",
+    "index.html": "/front-checkers/index.html",
+    "static/css/main.6b5f2569.chunk.css.map": "/front-checkers/static/css/main.6b5f2569.chunk.css.map",
+    "static/js/2.8a159189.chunk.js.LICENSE.txt": "/front-checkers/static/js/2.8a159189.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.ee831e8b.js",
+    "static/js/2.8a159189.chunk.js",
+    "static/css/main.6b5f2569.chunk.css",
+    "static/js/main.1ea9cdd2.chunk.js"
+  ]
+}
