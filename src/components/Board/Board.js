@@ -37,6 +37,7 @@ const Board = () => {
             onDragLeave={onDragLeave}
             onDrop = {onDrop}
               key={i}
+    
               className={`${style.Item} ${getDark(i) && style.Dark }`}
               data-row={getСoordinates(i).rowBoard + 1}
               data-column={getСoordinates(i).columnBoard}
