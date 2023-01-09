@@ -64,5 +64,5 @@ ul {
   opacity: 0.6;
   border-radius: 50%;
   background-color: gray;
-box-shadow: inset 4px 4px 6px rgba(105, 92, 92, 0.5), inset -4px -4px 6px rgba(0,0,0,0.5)!important;
+box-shadow: inset 4px 4px 6px rgba(105, 92, 92, 0.5), inset -4px -4px 6px rgba(0,0,0,0.5);
 }

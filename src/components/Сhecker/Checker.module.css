@@ -4,7 +4,7 @@
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    
+    /* background-color: red; */
    overflow: hidden;
     cursor: grab;
     border: 1px solid transparent;
@@ -13,9 +13,12 @@
 
 .Dark {
     background-color: rgb(128, 90, 90);
+    background-color: red;
 }
 
 .White {
     background-color: white;
 }
+
+
 
