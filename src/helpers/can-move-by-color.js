@@ -1,4 +1,4 @@
-import getMove from "./getMove";
+import getMove from "./get-move";
 
 const canMoveByColor = (evt, orderOfStep, currentChecker) => {
 

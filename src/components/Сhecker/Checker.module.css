@@ -1,24 +1,22 @@
-.Checker {
+.checker {
     position: relative;
     z-index: 5;
     width: 50px;
     height: 50px;
     border-radius: 50%;
     /* background-color: red; */
-   overflow: hidden;
+    overflow: hidden;
     cursor: grab;
     border: 1px solid transparent;
-    box-shadow: inset 4px 4px 6px rgba(0,0,0,0.5), inset -4px -4px 6px rgba(0,0,0,0.5);
+    box-shadow: inset 4px 4px 6px rgba(0, 0, 0, 0.5),
+        inset -4px -4px 6px rgba(0, 0, 0, 0.5);
 }
 
-.Dark {
+.dark {
     background-color: rgb(128, 90, 90);
     background-color: red;
 }
 
-.White {
+.white {
     background-color: white;
 }
-
-
-

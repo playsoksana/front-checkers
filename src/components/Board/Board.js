@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 
+import classNames from "../../lib/class_names";
+
 import { isDragStart, isDragEnd, onDragOver, onDragEnter, onDragLeave, onDrop } from '../../helpers/drags';
 import { isRanking, getСoordinates, getDark } from "../../helpers/initial.js";
-import getMove from "../../helpers/getMove";
-import isCanMoveAndKill from '../../helpers/canMoveAndKill';
+import getMove from "../../helpers/get-move";
+import isCanMoveAndKill from '../../helpers/can-move-and-kill';
 import canMoveByColor from "../../helpers/can-move-by-color.js";
 import checkersMustKill from "../../helpers/checkers-must-kill.js";
 
 import Checker from "../Сhecker/Checker";
 
-import style from "./Board.module.css";
+import styles from "./Board.module.css";
 let orderOfStep = 1;
 
 const Board = () => {
@@ -169,7 +171,7 @@ const Board = () => {
 
   const renderText = (i) => {
     return (
-      <span className={style.Text}>
+      <span className={styles.text}>
         R{getСoordinates(i).rowBoard}
         /
         C{getСoordinates(i).columnBoard}
@@ -180,10 +182,15 @@ const Board = () => {
   /* --- */
 
   return (
-    <ul className={style.Field}>
+    <ul className={styles.field}>
       {Array(64)
         .fill(1)
         .map((e, i) => {
+          const classNamesBoard = classNames({
+            [styles.item]: true,
+            [styles.dark]: getDark(i),
+          });
+
           return (
             <li
               onDragOver={onDragOverHandle}
@@ -192,7 +199,7 @@ const Board = () => {
               onDrop={onDropHandle}
               key={i}
 
-              className={`${style.Item} ${getDark(i) && style.Dark}`}
+              className={classNamesBoard}
               data-row={getСoordinates(i).rowBoard}
               data-column={getСoordinates(i).columnBoard}
               data-dark={getDark(i)}

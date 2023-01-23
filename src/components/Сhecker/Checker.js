@@ -1,12 +1,18 @@
 import React from "react";
 
+import classNames from "../../lib/class_names";
+
 import { CHECKER_COLOR } from "../../Types/Checker";
 
-import style from "./Checker.module.css";
+import styles from "./Checker.module.css";
 
 const Checker = (props) => {
   const color = props.darkTeam ? CHECKER_COLOR.dark : CHECKER_COLOR.white;
-  const styleName = props.isRender ? "Checker" : "Hidden";
+  const classNameChecker = classNames({
+    [styles.checker]: props.isRender,
+    [styles.dark]: props.darkTeam,
+    [styles.white]: !props.darkTeam,
+  });
 
   return (
     <div
@@ -16,7 +22,7 @@ const Checker = (props) => {
       draggable="true"
       onDragEnd={props.isDragEnd}
       onDragStart={props.isDragStart}
-      className={[style[styleName], style[color]].join(" ")}
+      className={classNameChecker}
     ></div>
   );
 };
