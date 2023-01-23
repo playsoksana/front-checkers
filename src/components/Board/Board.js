@@ -8,6 +8,7 @@ import getMove from "../../helpers/get-move";
 import isCanMoveAndKill from '../../helpers/can-move-and-kill';
 import canMoveByColor from "../../helpers/can-move-by-color.js";
 import checkersMustKill from "../../helpers/checkers-must-kill.js";
+import mustKillAgain from "../../helpers/must-kill-again";
 
 import Checker from "../Сhecker/Checker";
 
@@ -81,8 +82,14 @@ const Board = () => {
         return c;
       });
 
-      orderOfStep += 1;
       const newCoordAfterKilled = onKillChecked(newCoordAfterMove);
+      console.log(mustKillAgain(allChecker, currentChecker, setIdKilledChecker));
+      if (mustKillAgain(allChecker, currentChecker, setIdKilledChecker)) {
+        return;
+      }
+
+      orderOfStep += 1;
+
 
       setAllChecker(newCoordAfterKilled);
     }
