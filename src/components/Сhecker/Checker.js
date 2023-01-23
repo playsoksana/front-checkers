@@ -4,10 +4,20 @@ import classNames from "../../lib/class_names";
 
 import { CHECKER_COLOR } from "../../Types/Checker";
 
+import IconCrown from "../../Icon/Crown/index";
+
 import styles from "./Checker.module.css";
 
 const Checker = (props) => {
   const color = props.darkTeam ? CHECKER_COLOR.dark : CHECKER_COLOR.white;
+
+  const renderCrown = () => {
+    if (!props.isQueen) {
+      return null;
+    }
+    return (<IconCrown className={styles.iconCrown} />);
+  };
+
   const classNameChecker = classNames({
     [styles.checker]: props.isRender,
     [styles.dark]: props.darkTeam,
@@ -23,7 +33,9 @@ const Checker = (props) => {
       onDragEnd={props.isDragEnd}
       onDragStart={props.isDragStart}
       className={classNameChecker}
-    ></div>
+    >
+      {renderCrown()}
+    </div>
   );
 };
 
@@ -33,6 +45,7 @@ Checker.defaultProps = {
   isDragStart: () => { },
   isDragEnd: () => { },
   isRender: false,
+  isQueen: false,
 }
 
 export default Checker;

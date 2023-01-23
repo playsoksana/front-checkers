@@ -32,8 +32,37 @@ const mustKillAgain = (allChecker, currentChecker, setIdKilledChecker) => {
     const throughOneCellToUpLeft = allChecker.find(e => e.row === throughOneCellToUpLeftCoordinate.row && e.col === throughOneCellToUpLeftCoordinate.col);
 
     // kill one DownRight
+    if (nextCellToDownRight
+        && nextCellToDownRight?.color !== selectedColor
+        && !throughOneCellToDownRight
+        && throughOneCellToDownRightCoordinate.col < 9
+        && throughOneCellToDownRightCoordinate.row < 9) {
+        return true;
+    }
 
-    console.log(nextCellToDownRight, throughOneCellToDownRight);
+    if (nextCellToDownLeft
+        && nextCellToDownLeft?.color !== selectedColor
+        && !throughOneCellToDownLeft
+        && throughOneCellToDownLeftCoordinate.col > 0
+        && throughOneCellToDownLeftCoordinate.row < 9) {
+        return true;
+    }
+
+    if (nextCellToUpRight
+        && nextCellToUpRight?.color !== selectedColor
+        && !throughOneCellToUpRight
+        && throughOneCellToUpRightCoordinate.col < 9
+        && throughOneCellToUpRightCoordinate.row > 0) {
+        return true;
+    }
+
+    if (nextCellToUpLeft
+        && nextCellToUpLeft?.color !== selectedColor
+        && !throughOneCellToUpLeft
+        && throughOneCellToUpLeftCoordinate.col > 0
+        && throughOneCellToUpLeftCoordinate.row > 0) {
+        return true;
+    }
     return false;
 };
 

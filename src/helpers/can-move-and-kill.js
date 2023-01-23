@@ -1,6 +1,6 @@
 import { CHECKER_COLOR } from "../Types/Checker";
 
-const isCanMoveAndKill = (evt, allChecker, currentChecker, setIdKilledChecker) => {
+const isCanMoveAndKill = (evt, allChecker, currentChecker, idKilledChecker, setIdKilledChecker) => {
 
     const selectedChecker = allChecker.find(e => e.id === currentChecker.id);
     const selectedColor = currentChecker.color;
@@ -57,7 +57,11 @@ const isCanMoveAndKill = (evt, allChecker, currentChecker, setIdKilledChecker) =
     // kill one DownRight
     if (nextCellToDownRight?.color && !throughOneCellToDownRight && nextCellToDownRight?.color !== currentChecker?.color) {
         if (throughOneCellToDownRightCoordinate.row === evt.target.getAttribute("data-row") && throughOneCellToDownRightCoordinate.col === evt.target.getAttribute("data-column")) {
-            setIdKilledChecker(prev => [...prev, nextCellToDownRight]);
+            console.log(idKilledChecker);
+            if (!idKilledChecker.includes(nextCellToDownRight.id)) {
+                setIdKilledChecker(prev => [...prev, nextCellToDownRight.id]);
+            }
+
             return true;
         }
     }
@@ -65,7 +69,10 @@ const isCanMoveAndKill = (evt, allChecker, currentChecker, setIdKilledChecker) =
     // kill one DownLeft
     if (nextCellToDownLeft?.color && !throughOneCellToDownLeft && nextCellToDownLeft?.color !== currentChecker?.color) {
         if (throughOneCellToDownLeftCoordinate.row === evt.target.getAttribute("data-row") && throughOneCellToDownLeftCoordinate.col === evt.target.getAttribute("data-column")) {
-            setIdKilledChecker(prev => [...prev, nextCellToDownLeft]);
+            if (!idKilledChecker.includes(nextCellToDownLeft.id)) {
+                setIdKilledChecker(prev => [...prev, nextCellToDownLeft.id]);
+            }
+
             return true;
         }
     }
@@ -73,7 +80,9 @@ const isCanMoveAndKill = (evt, allChecker, currentChecker, setIdKilledChecker) =
     // kill one UpRight
     if (nextCellToUpRight?.color && !throughOneCellToUpRight && nextCellToUpRight?.color !== currentChecker?.color) {
         if (throughOneCellToUpRightCoordinate.row === evt.target.getAttribute("data-row") && throughOneCellToUpRightCoordinate.col === evt.target.getAttribute("data-column")) {
-            setIdKilledChecker(prev => [...prev, nextCellToUpRight]);
+            if (!idKilledChecker.includes(nextCellToUpRight.id)) {
+                setIdKilledChecker(prev => [...prev, nextCellToUpRight.id]);
+            }
             return true;
         }
     }
@@ -81,7 +90,10 @@ const isCanMoveAndKill = (evt, allChecker, currentChecker, setIdKilledChecker) =
     // kill one UpLeft
     if (nextCellToUpLeft?.color && !throughOneCellToUpLeft && nextCellToUpLeft?.color !== currentChecker?.color) {
         if (throughOneCellToUpLeftCoordinate.row === evt.target.getAttribute("data-row") && throughOneCellToUpLeftCoordinate.col === evt.target.getAttribute("data-column")) {
-            setIdKilledChecker(prev => [...prev, nextCellToUpLeft]);
+            if (!idKilledChecker.includes(nextCellToUpLeft.id)) {
+                setIdKilledChecker(prev => [...prev, nextCellToUpLeft.id]);
+            }
+
             return true;
         }
         return false;
