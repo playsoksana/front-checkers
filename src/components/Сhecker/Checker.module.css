@@ -8,18 +8,16 @@
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-
-    /* background-color: red; */
-    overflow: hidden;
-    cursor: grab;
     border: 1px solid transparent;
     box-shadow: inset 4px 4px 6px rgba(0, 0, 0, 0.5),
         inset -4px -4px 6px rgba(0, 0, 0, 0.5);
+
+    overflow: hidden;
+    cursor: grab;
 }
 
 .dark {
-    background-color: rgb(128, 90, 90);
-    background-color: red;
+    background-color: #564545;
 }
 
 .white {
