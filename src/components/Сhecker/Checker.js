@@ -9,6 +9,7 @@ import IconCrown from "../../Icon/Crown/index";
 import styles from "./Checker.module.css";
 
 const Checker = (props) => {
+
   const color = props.darkTeam ? CHECKER_COLOR.dark : CHECKER_COLOR.white;
 
   const renderCrown = () => {
@@ -22,6 +23,7 @@ const Checker = (props) => {
     [styles.checker]: props.isRender,
     [styles.dark]: props.darkTeam,
     [styles.white]: !props.darkTeam,
+    [styles.underAttack]: props.isUnderAttack,
   });
 
   return (
@@ -46,6 +48,7 @@ Checker.defaultProps = {
   isDragEnd: () => { },
   isRender: false,
   isQueen: false,
+  isUnderAttack: false,
 }
 
 export default Checker;

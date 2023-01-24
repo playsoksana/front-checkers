@@ -11,27 +11,27 @@ import checkersMustKill from "../../helpers/checkers-must-kill.js";
 import mustKillAgain from "../../helpers/must-kill-again";
 import makeQueen from "../../helpers/make-queen";
 
+
 import Checker from "../Сhecker/Checker";
 
-import { INITIAL_CHECKERS } from "../../Types/Checker";
+import { INITIAL_CHECKERS, CHECKER_COLOR } from "../../Types/Checker";
 
 import styles from "./Board.module.css";
-let orderOfStep = 1;
+
 
 const Board = () => {
   const [allChecker, setAllChecker] = useState(INITIAL_CHECKERS);
   const [currentChecker, setCurrentChecker] = useState(null);
   const [idKilledChecker, setIdKilledChecker] = useState([]);
+  const [orderOfStep, setOrderOfStep] = useState(1)
 
   /* --- */
 
   const onKillChecked = (arrCoor) => {
-
     if (!idKilledChecker[0]) {
-
       return arrCoor;
     }
-    console.log(arrCoor);
+
     for (let index = 0; index < idKilledChecker.length; index++) {
       arrCoor = arrCoor.filter(el => el.id !== idKilledChecker[index]);
     }
@@ -68,7 +68,7 @@ const Board = () => {
         }
       };
       setIdKilledChecker([]);
-      orderOfStep += 1;
+      setOrderOfStep(prev => prev + 1);
     }
   };
 
@@ -80,7 +80,14 @@ const Board = () => {
       color: evt.target.getAttribute("data-color"),
     };
 
-    setCurrentChecker(currCheck);
+    const checkersMustKillRes = checkersMustKill(allChecker, currCheck);
+    if (checkersMustKillRes.mustKill) {
+      setCurrentChecker(prev => ({ ...prev, ...currCheck, mustKill: checkersMustKillRes?.mustKill }))
+    } else {
+      setCurrentChecker(currCheck);
+    }
+
+
     if (!getMove(orderOfStep, currCheck)) {
       return;
     }
@@ -93,14 +100,16 @@ const Board = () => {
     isDragEnd(evt);
     setStep();
     setCurrentChecker(null);
-    console.log(allChecker);
+
   };
 
   // === OVER ===
 
   const onDragOverHandle = (evt) => {
+    const checkersMustKillRes = checkersMustKill(allChecker, currentChecker.color);
+
     if (!canMoveByColor(evt, orderOfStep, currentChecker)) return;
-    if (!checkersMustKill(evt, allChecker, currentChecker)) return;
+    if (!checkersMustKillRes.canMove) return;
     if (!isCanMoveAndKill(evt, allChecker, currentChecker, idKilledChecker, setIdKilledChecker)) return;
     onDragOver(evt);
   };
@@ -130,9 +139,31 @@ const Board = () => {
   };
 
   /* --- */
+
+  useEffect(() => {
+    const getColor = (orderOfStep) => {
+      if (orderOfStep % 2 === 0) {
+        return CHECKER_COLOR.dark
+      }
+
+      return CHECKER_COLOR.white;
+    }
+
+    const checkersMustKillRes = checkersMustKill(allChecker, { color: getColor(orderOfStep) });
+
+    if (checkersMustKillRes.mustKill) {
+      setCurrentChecker(prev => ({ ...prev, mustKill: checkersMustKillRes?.mustKill }))
+    }
+
+  }, [allChecker]);
+
+  /* --- */
+
   const renderChecker = (i) => {
     const checkerFound = allChecker.find(e => e.id === i.toString());
     const isQueen = allChecker.find(e => e.id === i.toString() && e.queen);
+    const isUnderAttack = (currentChecker?.mustKill || []).includes(`${i}`);
+
 
     return (
       <Checker
@@ -142,6 +173,8 @@ const Board = () => {
         isDragStart={isDragStartHandle}
         isDragEnd={isDragEndHandle}
         isQueen={isQueen}
+        isUnderAttack={isUnderAttack}
+
       />
     );
   }
