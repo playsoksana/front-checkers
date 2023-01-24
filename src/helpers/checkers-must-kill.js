@@ -1,6 +1,6 @@
 
 
-const checkersMustKill = (allChecker, currentChecker) => {
+const checkerMustKillAgain = (allChecker, currentChecker) => {
     const result = {};
     const checkerWhoMustKill = [];
     const checkerThatPossibleKill = [];
@@ -96,4 +96,4 @@ const checkersMustKill = (allChecker, currentChecker) => {
     return result;
 }
 
-export default checkersMustKill;
+export default checkerMustKillAgain;

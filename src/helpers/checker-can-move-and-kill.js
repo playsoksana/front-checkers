@@ -1,6 +1,6 @@
 import { CHECKER_COLOR } from "../Types/Checker";
 
-const isCanMoveAndKill = (evt, allChecker, currentChecker, idKilledChecker, setIdKilledChecker) => {
+const checkerCanMoveAndKill = (evt, allChecker, currentChecker, idKilledChecker, setIdKilledChecker) => {
 
     const selectedChecker = allChecker.find(e => e.id === currentChecker.id);
     const selectedColor = currentChecker.color;
@@ -101,4 +101,4 @@ const isCanMoveAndKill = (evt, allChecker, currentChecker, idKilledChecker, setI
     return false;
 }
 
-export default isCanMoveAndKill;
+export default checkerCanMoveAndKill;

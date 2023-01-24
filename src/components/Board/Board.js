@@ -3,14 +3,13 @@ import React, { useState, useEffect } from "react";
 import classNames from "../../lib/class_names";
 
 import { isDragStart, isDragEnd, onDragOver, onDragEnter, onDragLeave, onDrop } from '../../helpers/drags';
-import { isRanking, getСoordinates, getDark } from "../../helpers/initial.js";
-import getMove from "../../helpers/get-move";
-import isCanMoveAndKill from '../../helpers/can-move-and-kill';
-import canMoveByColor from "../../helpers/can-move-by-color.js";
+import { getCoordinateForChecker, colorIsDarkByIdBoard } from "../../helpers/get-values-for-board .js";
+import checkerMoveByOrder from "../../helpers/checker-can-move-by-order";
+import checkerCanMoveAndKill from '../../helpers/checker-can-move-and-kill';
+import checkerCanMoveByColor from "../../helpers/checker-can-move-by-color.js";
 import checkersMustKill from "../../helpers/checkers-must-kill.js";
-import mustKillAgain from "../../helpers/must-kill-again";
-import makeQueen from "../../helpers/make-queen";
-
+import checkerMustKillAgain from "../../helpers/checker-must-kill-again";
+import addStatusQueen from "../../helpers/add-status-queen";
 
 import Checker from "../Сhecker/Checker";
 
@@ -41,7 +40,7 @@ const Board = () => {
 
   /* --- */
 
-  const setStep = () => {
+  const changeStepNumber = () => {
     const obj = allChecker.find(c => c.id === currentChecker.id);
     if (obj.col === currentChecker.col && obj.row === currentChecker.row) {
       return;
@@ -58,11 +57,11 @@ const Board = () => {
       });
 
       const newCoordAfterKilled = onKillChecked(newCoordAfterMove);
-      const withQueen = makeQueen(newCoordAfterKilled, currentChecker);
+      const withQueen = addStatusQueen(newCoordAfterKilled, currentChecker);
 
       setAllChecker(withQueen);
       if (idKilledChecker[0]) {
-        if (mustKillAgain(newCoordAfterKilled, currentChecker, setIdKilledChecker)) {
+        if (checkerMustKillAgain(newCoordAfterKilled, currentChecker, setIdKilledChecker)) {
           console.log("FIX", newCoordAfterKilled);
           return;
         }
@@ -88,7 +87,7 @@ const Board = () => {
     }
 
 
-    if (!getMove(orderOfStep, currCheck)) {
+    if (!checkerMoveByOrder(orderOfStep, currCheck)) {
       return;
     }
     isDragStart(evt);
@@ -98,7 +97,7 @@ const Board = () => {
 
   const isDragEndHandle = (evt) => {
     isDragEnd(evt);
-    setStep();
+    changeStepNumber();
     setCurrentChecker(null);
 
   };
@@ -108,16 +107,16 @@ const Board = () => {
   const onDragOverHandle = (evt) => {
     const checkersMustKillRes = checkersMustKill(allChecker, currentChecker.color);
 
-    if (!canMoveByColor(evt, orderOfStep, currentChecker)) return;
+    if (!checkerCanMoveByColor(evt, orderOfStep, currentChecker)) return;
     if (!checkersMustKillRes.canMove) return;
-    if (!isCanMoveAndKill(evt, allChecker, currentChecker, idKilledChecker, setIdKilledChecker)) return;
+    if (!checkerCanMoveAndKill(evt, allChecker, currentChecker, idKilledChecker, setIdKilledChecker)) return;
     onDragOver(evt);
   };
 
   // === ENTER ===
 
   const onDragEnterHandle = (evt) => {
-    if (!canMoveByColor(evt, orderOfStep, currentChecker)) return;
+    if (!checkerCanMoveByColor(evt, orderOfStep, currentChecker)) return;
     onDragEnter(evt);
   };
 
@@ -182,9 +181,9 @@ const Board = () => {
   const renderText = (i) => {
     return (
       <span className={styles.text}>
-        R{getСoordinates(i).rowBoard}
+        R{getCoordinateForChecker(i).row}
         /
-        C{getСoordinates(i).columnBoard}
+        C{getCoordinateForChecker(i).col}
       </span>
     );
   }
@@ -198,7 +197,7 @@ const Board = () => {
         .map((e, i) => {
           const classNamesBoard = classNames({
             [styles.item]: true,
-            [styles.dark]: getDark(i),
+            [styles.dark]: colorIsDarkByIdBoard(i),
           });
 
           return (
@@ -210,9 +209,9 @@ const Board = () => {
               key={i}
 
               className={classNamesBoard}
-              data-row={getСoordinates(i).rowBoard}
-              data-column={getСoordinates(i).columnBoard}
-              data-dark={getDark(i)}
+              data-row={getCoordinateForChecker(i).row}
+              data-column={getCoordinateForChecker(i).col}
+              data-dark={colorIsDarkByIdBoard(i)}
             >
               {renderText(i)}
               {renderChecker(i)}
