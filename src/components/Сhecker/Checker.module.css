@@ -1,47 +1,52 @@
-.Checker {
-  position: relative;
-  z-index: 5;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
+.checker {
+    position: relative;
+    z-index: 5;
+    width: 50px;
+    height: 50px;
+    display: grid;
 
-  overflow: hidden;
-  cursor: grab;
-  border: 1px solid transparent;
-  box-shadow: inset 4px 4px 6px rgba(0, 0, 0, 0.5),
-    inset -4px -4px 6px rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    border: 1px solid transparent;
+    box-shadow: inset 4px 4px 6px rgba(0, 0, 0, 0.5),
+        inset -4px -4px 6px rgba(0, 0, 0, 0.5);
+
+    overflow: hidden;
+    cursor: grab;
 }
 
-.Dark {
-  background-color: rgb(128, 90, 90);
+.dark {
+    background-color: #564545;
 }
 
-.White {
-  background-color: white;
+.white {
+    background-color: #cddade;
 }
 
-.gavno {
-  border: 1px solid rgba(20, 20, 20, 0.387) !important;
-  opacity: 0.8 !important;
+.iconCrown {
+    width: 2rem;
+    height: 2rem;
 }
 
-.hide {
-  display: none;
+.dark.underAttack {
+    background-color: #903d3d;
 }
 
-.hovered {
-  position: relative;
+.white.underAttack {
+    background-color: #e2aeae;
 }
 
-.hovered::after {
-  content: "";
-  display: block;
-  position: absolute;
-  width: 50px;
-  height: 50px;
-  opacity: 0.6;
-  border-radius: 50%;
-  background-color: gray;
-  box-shadow: inset 4px 4px 6px rgba(105, 92, 92, 0.5),
-    inset -4px -4px 6px rgba(0, 0, 0, 0.5) !important;
+.checker.underAttack::after {
+    position: absolute;
+    z-index: 1;
+    content: "";
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    border: 1px solid transparent;
+    background-color: rgba(255, 0, 0, 0.185);
+    opacity: 0.25;
 }

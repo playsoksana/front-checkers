@@ -1,35 +1,35 @@
-.Item {
-position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid rgb(228, 21, 21);
- 
-  background-color: blanchedalmond;
-  color: gray;
+.item {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgb(228, 21, 21);
 
+    background-color: blanchedalmond;
+    color: gray;
 }
 
-.Field {
-  display: grid;
-  margin: 0 auto;
-  grid-template-columns: repeat(8, 1fr);
-  grid-template-rows: repeat(8, 1fr);
-  width: 500px;
-  height: 500px;
+.field {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    width: 500px;
+    height: 500px;
 
+    margin: 0 auto;
 }
 
-.Dark {
-  background-color: black;
-  color: gray;
+.dark {
+    background-color: #83563e;
+    color: gray;
 }
 
-.Text {
-pointer-events: none;
+.text {
     position: absolute;
     top: 50%;
     left: 50%;
- transform: translate(-50%, -50%);
-  opacity: 0.5;
+    transform: translate(-50%, -50%);
+    opacity: 0.5;
+
+    pointer-events: none;
 }

@@ -1,0 +1,11 @@
+import { CHECKER_COLOR } from "../Types/Checker";
+
+const checkerCanMoveByOrder = (step, currentChecker) => {
+    if (!currentChecker) {
+        return false;
+    }
+
+    return currentChecker.color === CHECKER_COLOR.dark && step % 2 === 0 || currentChecker.color === CHECKER_COLOR.white && step % 2 === 1;
+}
+
+export default checkerCanMoveByOrder;

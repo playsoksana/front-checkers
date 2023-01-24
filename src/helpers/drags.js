@@ -7,6 +7,7 @@ export const isDragStart = (style) => (ev) => {
     ev.target.classList.add(style.hide);
   }, 0);
 };
+
 export const isDragEnd = (style) => (ev) => {
   ev.target.classList.remove(style.gavno);
   ev.target.classList.remove(style.hide);
