@@ -87,7 +87,6 @@ const checkersMustKill = (allChecker, currentChecker) => {
     result.canMove = checkerWhoMustKill.includes(currentChecker?.id);
     result.mustKill = checkerThatPossibleKill;
 
-    console.log(result);
     return result;
 }
 
