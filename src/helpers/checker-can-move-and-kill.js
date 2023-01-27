@@ -4,6 +4,7 @@ const checkerCanMoveAndKill = (evt, allChecker, currentChecker, idKilledChecker,
 
     const selectedChecker = allChecker.find(e => e.id === currentChecker.id);
     const selectedColor = currentChecker.color;
+    // console.log(selectedChecker);
 
 
     //DownRight

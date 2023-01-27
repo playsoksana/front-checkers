@@ -31,10 +31,12 @@ const Checker = (props) => {
       id={props.id}
       data-color={color}
       data-checker={"checker"}
+      data-role={props.isQueen ? "queen" : "checker"}
       draggable="true"
       onDragEnd={props.isDragEnd}
       onDragStart={props.isDragStart}
       className={classNameChecker}
+
     >
       {renderCrown()}
     </div>
