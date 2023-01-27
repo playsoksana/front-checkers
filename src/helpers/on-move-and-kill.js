@@ -1,4 +1,5 @@
 import { CHECKER_COLOR } from "../Types/Checker";
+// if (!onMoveAndKill(evt, allChecker, currentChecker, idKilledChecker, setIdKilledChecker)) return;
 
 const onMoveAndKill = (evt, allChecker, currentChecker, idKilledChecker, setIdKilledChecker) => {
 
@@ -58,7 +59,7 @@ const onMoveAndKill = (evt, allChecker, currentChecker, idKilledChecker, setIdKi
     // kill one DownRight
     if (nextCellToDownRight?.color && !throughOneCellToDownRight && nextCellToDownRight?.color !== currentChecker?.color) {
         if (throughOneCellToDownRightCoordinate.row === evt.target.getAttribute("data-row") && throughOneCellToDownRightCoordinate.col === evt.target.getAttribute("data-column")) {
-            console.log(idKilledChecker);
+            //   console.log(idKilledChecker);
             if (!idKilledChecker.includes(nextCellToDownRight.id)) {
                 setIdKilledChecker(prev => [...prev, nextCellToDownRight.id]);
             }
