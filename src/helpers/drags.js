@@ -1,38 +1,41 @@
+
+
 let currentItem = null;
 
-export const isDragStart = (style) => (ev) => {
+export const isDragStart = (ev) => {
   currentItem = ev.target;
-  ev.target.classList.add(style.gavno);
+  ev.target.classList.add(`gavno`);
   setTimeout(() => {
-    ev.target.classList.add(style.hide);
-  }, 0);
+    ev.target.classList.add(`hide`)
+  }, 0)
+
 };
 
-export const isDragEnd = (style) => (ev) => {
-  ev.target.classList.remove(style.gavno);
-  ev.target.classList.remove(style.hide);
+
+export const isDragEnd = (ev) => {
+  ev.target.classList.remove(`hide`);
 };
+
 
 export const onDragEnter = (e) => {
-  console.log(2, e);
+  // console.log(1, e);
+  e.target.classList.add('hovered')
 
-  e.target.classList.add("hovered");
 };
 
 export const onDragOver = (e) => {
-  console.log(1, e);
   e.preventDefault();
 };
 
-export const onDragLeave = (style) => (e) => {
-  console.log(3, e);
-  e.target.classList.remove(hovered.hovered);
+
+export const onDragLeave = (e) => {
+  // console.log(3, e);
+  e.target.classList.remove('hovered')
 };
 
-export const onDrop = (style) => (e) => {
-  console.log(4, e);
-  console.log(5, e.target);
-  console.log(6, currentItem);
+export const onDrop = (e) => {
   e.target.append(currentItem);
-  e.target.classList.remove(hovered.hovered);
-};
+  e.target.classList.remove('hovered');
+}
+
+
