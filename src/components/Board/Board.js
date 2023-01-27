@@ -5,7 +5,7 @@ import classNames from "../../lib/class_names";
 import { isDragStart, isDragEnd, onDragOver, onDragEnter, onDragLeave, onDrop } from '../../helpers/drags';
 import { getCoordinateForChecker, colorIsDarkByIdBoard } from "../../helpers/get-values-for-board .js";
 import checkerMoveByOrder from "../../helpers/checker-can-move-by-order";
-import checkerCanMoveAndKill from '../../helpers/checker-can-move-and-kill';
+import onMoveAndKill from '../../helpers/on-move-and-kill';
 import checkerCanMoveByColor from "../../helpers/checker-can-move-by-color.js";
 import checkersMustKill from "../../helpers/checkers-must-kill.js";
 import checkerMustKillAgain from "../../helpers/checker-must-kill-again";
@@ -40,7 +40,10 @@ const Board = () => {
 
   /* --- */
 
+
+
   const changeStepNumber = () => {
+
     const obj = allChecker.find(c => c.id === currentChecker.id);
     if (obj.col === currentChecker.col && obj.row === currentChecker.row) {
       return;
@@ -61,6 +64,7 @@ const Board = () => {
 
       setAllChecker(withQueen);
       if (idKilledChecker[0]) {
+
         if (checkerMustKillAgain(newCoordAfterKilled, currentChecker, setIdKilledChecker)) {
           console.log("FIX", newCoordAfterKilled);
           return;
@@ -77,15 +81,16 @@ const Board = () => {
     const currCheck = {
       id: evt.target.id,
       color: evt.target.getAttribute("data-color"),
+      role: evt.target.getAttribute("data-role"),
     };
 
     const checkersMustKillRes = checkersMustKill(allChecker, currCheck);
+
     if (checkersMustKillRes.mustKill) {
-      setCurrentChecker(prev => ({ ...prev, ...currCheck, mustKill: checkersMustKillRes?.mustKill }))
+      setCurrentChecker(prev => ({ ...prev, ...currCheck, mustKill: checkersMustKillRes?.mustKill, canMove: checkersMustKillRes?.canMove }))
     } else {
       setCurrentChecker(currCheck);
     }
-
 
     if (!checkerMoveByOrder(orderOfStep, currCheck)) {
       return;
@@ -96,6 +101,7 @@ const Board = () => {
   // === END ===
 
   const isDragEndHandle = (evt) => {
+
     isDragEnd(evt);
     changeStepNumber();
     setCurrentChecker(null);
@@ -105,11 +111,10 @@ const Board = () => {
   // === OVER ===
 
   const onDragOverHandle = (evt) => {
-    const checkersMustKillRes = checkersMustKill(allChecker, currentChecker.color);
-
+    const isQueen = currentChecker.role === "queen";
     if (!checkerCanMoveByColor(evt, orderOfStep, currentChecker)) return;
-    if (!checkersMustKillRes.canMove) return;
-    if (!checkerCanMoveAndKill(evt, allChecker, currentChecker, idKilledChecker, setIdKilledChecker)) return;
+    if (!currentChecker.canMove) return;
+    if (!onMoveAndKill(evt, allChecker, currentChecker, idKilledChecker, setIdKilledChecker)) return;
     onDragOver(evt);
   };
 
@@ -178,7 +183,7 @@ const Board = () => {
     );
   }
 
-  const renderText = (i) => {
+  const renderTitleCell = (i) => {
     return (
       <span className={styles.text}>
         R{getCoordinateForChecker(i).row}
@@ -195,6 +200,8 @@ const Board = () => {
       {Array(64)
         .fill(1)
         .map((e, i) => {
+          const position = getCoordinateForChecker(i);
+
           const classNamesBoard = classNames({
             [styles.item]: true,
             [styles.dark]: colorIsDarkByIdBoard(i),
@@ -209,11 +216,11 @@ const Board = () => {
               key={i}
 
               className={classNamesBoard}
-              data-row={getCoordinateForChecker(i).row}
-              data-column={getCoordinateForChecker(i).col}
+              data-row={position.row}
+              data-column={position.col}
               data-dark={colorIsDarkByIdBoard(i)}
             >
-              {renderText(i)}
+              {renderTitleCell(i)}
               {renderChecker(i)}
             </li>
           );
