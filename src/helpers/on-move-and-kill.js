@@ -26,17 +26,21 @@ const onMoveAndKill = (evt, allChecker, currentChecker, idKilledChecker, setIdKi
 
     // UpRight
 
-    const nextCellToUpRightCoordinate = { row: (Number(checker.row) - 1).toString(), col: (Number(checker.col) + 1).toString() };
-    const throughOneCellToUpRightCoordinate = { row: (Number(checker.row) - 2).toString(), col: (Number(checker.col) + 2).toString() }
-    const nextCellToUpRight = allChecker.find(e => e.row === nextCellToUpRightCoordinate.row && e.col === nextCellToUpRightCoordinate.col);
-    const throughOneCellToUpRight = allChecker.find(e => e.row === throughOneCellToUpRightCoordinate.row && e.col === throughOneCellToUpRightCoordinate.col);
+    const nextRowUR = (Number(checker.row) - 1).toString();
+    const nextColUR = (Number(checker.col) + 1).toString();
+    const throughOneRowUR = (Number(checker.row) - 2).toString();
+    const throughOneColUR = (Number(checker.col) + 2).toString();
+    const nextCellToUR = getObjectByCoordinate(allChecker, nextRowUR, nextColUR)
+    const throughOneCellUR = getObjectByCoordinate(allChecker, throughOneRowUR, throughOneColUR);
 
     // UpLeft
 
-    const nextCellToUpLeftCoordinate = { row: (Number(checker.row) - 1).toString(), col: (Number(checker.col) - 1).toString() };
-    const throughOneCellToUpLeftCoordinate = { row: (Number(checker.row) - 2).toString(), col: (Number(checker.col) - 2).toString() }
-    const nextCellToUpLeft = allChecker.find(e => e.row === nextCellToUpLeftCoordinate.row && e.col === nextCellToUpLeftCoordinate.col);
-    const throughOneCellToUpLeft = allChecker.find(e => e.row === throughOneCellToUpLeftCoordinate.row && e.col === throughOneCellToUpLeftCoordinate.col);
+    const nextRowUL = (Number(checker.row) - 1).toString();
+    const nextColUL = (Number(checker.col) - 1).toString();
+    const throughOneRowUL = (Number(checker.row) - 2).toString();
+    const throughOneColUL = (Number(checker.col) - 2).toString();
+    const nextCellToUL = getObjectByCoordinate(allChecker, nextRowUL, nextColUL)
+    const throughOneCellUL = getObjectByCoordinate(allChecker, throughOneRowUL, throughOneColUL);
 
     // "White" ===========================================
     if (selectedColor === CHECKER_COLOR.white) {
@@ -52,10 +56,11 @@ const onMoveAndKill = (evt, allChecker, currentChecker, idKilledChecker, setIdKi
 
     if (selectedColor === CHECKER_COLOR.dark) {
         // short step Dark
-        if (!nextCellToUpRight && nextCellToUpRightCoordinate.row === evt.target.getAttribute("data-row") && nextCellToUpRightCoordinate.col === evt.target.getAttribute("data-column")) {
+        if (!nextCellToUR && nextRowUR === evtRow && nextColUR === evtCol) {
             return true;
         }
-        if (!nextCellToUpLeft && nextCellToUpLeftCoordinate.row === evt.target.getAttribute("data-row") && nextCellToUpLeftCoordinate.col === evt.target.getAttribute("data-column")) {
+
+        if (!nextCellToUL && nextRowUL === evtRow && nextColUL === evtCol) {
             return true;
         }
     }
@@ -93,26 +98,37 @@ const onMoveAndKill = (evt, allChecker, currentChecker, idKilledChecker, setIdKi
     }
 
     // kill one UpRight
-    if (nextCellToUpRight?.color && !throughOneCellToUpRight && nextCellToUpRight?.color !== currentChecker?.color) {
-        if (throughOneCellToUpRightCoordinate.row === evt.target.getAttribute("data-row") && throughOneCellToUpRightCoordinate.col === evt.target.getAttribute("data-column")) {
-            if (!idKilledChecker.includes(nextCellToUpRight.id)) {
-                setIdKilledChecker(prev => [...prev, nextCellToUpRight.id]);
+    const isColorsDifferentUR = (
+        nextCellToUR?.color
+        && !throughOneCellUR
+        && nextCellToUR?.color !== selectedColor);
+
+    if (isColorsDifferentUR) {
+        if (throughOneRowUR === evtRow && throughOneColUR === evtCol) {
+            if (!idKilledChecker.includes(nextCellToUR.id)) {
+                setIdKilledChecker(prev => [...prev, nextCellToUR.id]);
             }
+
             return true;
         }
     }
 
     // kill one UpLeft
-    if (nextCellToUpLeft?.color && !throughOneCellToUpLeft && nextCellToUpLeft?.color !== currentChecker?.color) {
-        if (throughOneCellToUpLeftCoordinate.row === evt.target.getAttribute("data-row") && throughOneCellToUpLeftCoordinate.col === evt.target.getAttribute("data-column")) {
-            if (!idKilledChecker.includes(nextCellToUpLeft.id)) {
-                setIdKilledChecker(prev => [...prev, nextCellToUpLeft.id]);
+    const isColorsDifferentUL = (
+        nextCellToUL?.color
+        && !throughOneCellUL
+        && nextCellToUL?.color !== selectedColor);
+
+    if (isColorsDifferentUL) {
+        if (throughOneRowUL === evtRow && throughOneColUL === evtCol) {
+            if (!idKilledChecker.includes(nextCellToUL.id)) {
+                setIdKilledChecker(prev => [...prev, nextCellToUL.id]);
             }
 
             return true;
         }
-        return false;
     }
+
     return false;
 }
 
