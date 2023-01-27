@@ -5,7 +5,7 @@ import classNames from "../../lib/class_names";
 import { isDragStart, isDragEnd, onDragOver, onDragEnter, onDragLeave, onDrop } from '../../helpers/drags';
 import { getCoordinateForChecker, colorIsDarkByIdBoard } from "../../helpers/get-values-for-board .js";
 import checkerMoveByOrder from "../../helpers/checker-can-move-by-order";
-import checkerCanMoveAndKill from '../../helpers/checker-can-move-and-kill';
+import onMoveAndKill from '../../helpers/on-move-and-kill';
 import checkerCanMoveByColor from "../../helpers/checker-can-move-by-color.js";
 import checkersMustKill from "../../helpers/checkers-must-kill.js";
 import checkerMustKillAgain from "../../helpers/checker-must-kill-again";
@@ -114,7 +114,7 @@ const Board = () => {
     const isQueen = currentChecker.role === "queen";
     if (!checkerCanMoveByColor(evt, orderOfStep, currentChecker)) return;
     if (!currentChecker.canMove) return;
-    if (!checkerCanMoveAndKill(evt, allChecker, currentChecker, idKilledChecker, setIdKilledChecker)) return;
+    if (!onMoveAndKill(evt, allChecker, currentChecker, idKilledChecker, setIdKilledChecker)) return;
     onDragOver(evt);
   };
 

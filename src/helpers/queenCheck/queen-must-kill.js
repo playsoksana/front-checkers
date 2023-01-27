@@ -1,7 +1,6 @@
 import { getObjectByCoordinate } from '../../lib/array.js';
 
-const checkDownRight = (queen, allChecker) => {
-    let idDownRight = null;
+const checkQueenDownRight = (queen, allChecker) => {
     const nextRow = (Number(queen.row) + 1).toString();
     const throughOneRow = (Number(queen.row) + 2).toString();
     const nextCol = (Number(queen.col) + 1).toString();
@@ -10,7 +9,7 @@ const checkDownRight = (queen, allChecker) => {
     const beUnableKill = queen?.color && (nextCell?.color === queen?.color || nextRow >= 8 || nextCol >= 8);
 
     if (beUnableKill) {
-        return idDownRight;
+        return null;
     }
 
     if (nextCell) {
@@ -19,17 +18,17 @@ const checkDownRight = (queen, allChecker) => {
             return nextCell.id;
         }
 
-        return idDownRight;
+        return null;
     }
 
     const newQueen = { ...queen, row: nextRow, col: nextCol };
 
-    return checkDownRight(newQueen, allChecker);
+    return checkQueenDownRight(newQueen, allChecker);
 }
 
 /* --- */
 
-const checkDownLeft = (queen, allChecker) => {
+const checkQueenDownLeft = (queen, allChecker) => {
     let idDownLeft = null;
     const nextRow = (Number(queen.row) + 1).toString();
     const throughOneRow = (Number(queen.row) + 2).toString();
@@ -53,12 +52,12 @@ const checkDownLeft = (queen, allChecker) => {
 
     const newQueen = { ...queen, row: nextRow, col: nextCol };
 
-    return checkDownLeft(newQueen, allChecker);
+    return checkQueenDownLeft(newQueen, allChecker);
 }
 
 /* --- */
 
-const checkUpRight = (queen, allChecker) => {
+const checkQueenUpRight = (queen, allChecker) => {
     let idUpRight = null;
     const nextRow = (Number(queen.row) - 1).toString();
     const throughOneRow = (Number(queen.row) - 2).toString();
@@ -82,12 +81,12 @@ const checkUpRight = (queen, allChecker) => {
 
     const newQueen = { ...queen, row: nextRow, col: nextCol };
 
-    return checkUpRight(newQueen, allChecker);
+    return checkQueenUpRight(newQueen, allChecker);
 }
 
 /* --- */
 
-const checkUpLeft = (queen, allChecker) => {
+const checkQueenUpLeft = (queen, allChecker) => {
     let idUpLeft = null;
     const nextRow = (Number(queen.row) - 1).toString();
     const throughOneRow = (Number(queen.row) - 2).toString();
@@ -111,12 +110,12 @@ const checkUpLeft = (queen, allChecker) => {
 
     const newQueen = { ...queen, row: nextRow, col: nextCol };
 
-    return checkUpLeft(newQueen, allChecker);
+    return checkQueenUpLeft(newQueen, allChecker);
 }
 
 export {
-    checkDownRight,
-    checkDownLeft,
-    checkUpRight,
-    checkUpLeft
+    checkQueenDownRight,
+    checkQueenDownLeft,
+    checkQueenUpRight,
+    checkQueenUpLeft
 }

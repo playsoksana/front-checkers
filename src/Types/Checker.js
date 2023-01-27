@@ -27,7 +27,7 @@ const INITIAL_CHECKERS = [
     { id: '56', color: 'Dark', row: '8', col: '1', queen: true, },
     { id: '58', color: 'Dark', row: '8', col: '3', queen: true, },
     { id: '60', color: 'Dark', row: '8', col: '5', queen: true, },
-    { id: '62', color: 'Dark', row: '8', col: '7', queen: true, },
+    { id: '62', color: 'Dark', row: '8', col: '7', queen: false, },
 ];
 
 export {
