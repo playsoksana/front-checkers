@@ -84,6 +84,8 @@ const Board = () => {
       role: evt.target.getAttribute("data-role"),
     };
 
+
+
     const checkersMustKillRes = checkersMustKill(allChecker, currCheck);
 
     if (checkersMustKillRes.mustKill) {

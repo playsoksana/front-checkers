@@ -1,6 +1,7 @@
 import checkerCanMoveByOrder from "./checker-can-move-by-order";
 
 const checkerCanMoveByColor = (evt, orderOfStep, currentChecker) => {
+
     const canMoveByColor = checkerCanMoveByOrder(orderOfStep, currentChecker);
 
     if (!canMoveByColor || evt.target.getAttribute("data-dark") === "false") {
