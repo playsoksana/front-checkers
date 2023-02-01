@@ -64,32 +64,32 @@ const canMoveDownRight = (checker, allChecker, evt, idKilledChecker, setIdKilled
     // QUEEN ======================================
 
 
-    if (checker.queen) {
-        const arrRealSteps = getArrDR(checker, allChecker);
-        if (arrRealSteps.length === 0) {
-            console.log(1);
-            return false;
-        }
+    // if (checker.queen) {
+    //     const arrRealSteps = getArrDR(checker, allChecker);
+    //     if (arrRealSteps.length === 0) {
+    //         console.log(1);
+    //         return false;
+    //     }
 
-        const indexVictim = arrRealSteps.findIndex(e => e?.id);
-        if (indexVictim === -1) {
-            console.log(2);
-            return true;
-        }
+    //     const indexVictim = arrRealSteps.findIndex(e => e?.id);
+    //     if (indexVictim === -1) {
+    //         console.log(2);
+    //         return true;
+    //     }
 
-        // add kill
-        const arrRealStepsWithoutVictim = arrRealSteps.slice(indexVictim + 1, arrRealSteps.length)
+    //     // add kill
+    //     const arrRealStepsWithoutVictim = arrRealSteps.slice(indexVictim + 1, arrRealSteps.length)
 
 
-        const findRealCellsAfterDelete = arrRealStepsWithoutVictim.find(e => e.row === evtRow)
+    //     const findRealCellsAfterDelete = arrRealStepsWithoutVictim.find(e => e.row === evtRow)
 
-        if (findRealCellsAfterDelete) {
-            setIdKilledChecker(prev => [...prev, arrRealSteps[indexVictim].id]);
-            return true;
-        }
+    //     if (findRealCellsAfterDelete) {
+    //         setIdKilledChecker(prev => [...prev, arrRealSteps[indexVictim].id]);
+    //         return true;
+    //     }
 
-        return false;
-    }
+    //     return false;
+    // }
 
     return false;
 }

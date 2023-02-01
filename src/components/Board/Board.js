@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { useStore, useSelector, useDispatch } from "react-redux";
+
+import { setAllChecker } from '../../redux/action';
 
 import classNames from "../../lib/class_names";
 
@@ -18,14 +21,22 @@ import { INITIAL_CHECKERS, CHECKER_COLOR } from "../../Types/Checker";
 import styles from "./Board.module.css";
 
 
+const storeSelector = (state) => ({
+  allChecker: state.allChecker,
+});
+
 const Board = () => {
-  const [allChecker, setAllChecker] = useState(INITIAL_CHECKERS);
   const [currentChecker, setCurrentChecker] = useState(null);
   const [idKilledChecker, setIdKilledChecker] = useState([]);
   const [orderOfStep, setOrderOfStep] = useState(1)
 
   /* --- */
+  const store = useStore();
+  const selector = useSelector(storeSelector);
+  const dispatch = useDispatch();
+  const { allChecker } = selector;
 
+  console.log(888888, allChecker);
   const onKillChecked = (arrCoor) => {
     if (!idKilledChecker[0]) {
       return arrCoor;
@@ -39,8 +50,6 @@ const Board = () => {
   }
 
   /* --- */
-
-
 
   const changeStepNumber = () => {
 
@@ -62,7 +71,8 @@ const Board = () => {
       const newCoordAfterKilled = onKillChecked(newCoordAfterMove);
       const withQueen = addStatusQueen(newCoordAfterKilled, currentChecker);
 
-      setAllChecker(withQueen);
+      dispatch(setAllChecker(withQueen))
+
       if (idKilledChecker[0]) {
 
         if (checkerMustKillAgain(newCoordAfterKilled, currentChecker, setIdKilledChecker)) {
@@ -89,8 +99,14 @@ const Board = () => {
     const checkersMustKillRes = checkersMustKill(allChecker, currCheck);
 
     if (checkersMustKillRes.mustKill) {
-      setCurrentChecker(prev => ({ ...prev, ...currCheck, mustKill: checkersMustKillRes?.mustKill, canMove: checkersMustKillRes?.canMove }))
-    } else {
+      const values = {
+        mustKill: checkersMustKillRes?.mustKill,
+        canMove: checkersMustKillRes?.canMove
+      }
+      setCurrentChecker(prev => ({ ...prev, ...currCheck, ...values }))
+    }
+
+    if (!checkersMustKillRes.mustKill) {
       setCurrentChecker(currCheck);
     }
 
@@ -166,8 +182,8 @@ const Board = () => {
   /* --- */
 
   const renderChecker = (i) => {
-    const checkerFound = allChecker.find(e => e.id === i.toString());
-    const isQueen = allChecker.find(e => e.id === i.toString() && e.queen);
+    const checkerFound = (allChecker || []).find(e => e.id === i.toString());
+    const isQueen = (allChecker || []).find(e => e.id === i.toString() && e.queen);
     const isUnderAttack = (currentChecker?.mustKill || []).includes(`${i}`);
 
 
