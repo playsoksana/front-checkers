@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { setAllChecker } from '../../redux/action';
+import { setAllChecker } from '../../redux/allChecker/action';
+import { setOrder } from "../../redux/order/actions";
 
 import classNames from "../../lib/class_names";
 
@@ -22,18 +23,24 @@ import styles from "./Board.module.css";
 
 
 const storeSelector = (state) => ({
-  allChecker: state.allChecker
+  allChecker: state.allChecker,
+  order: state.order,
 });
 
 const Board = () => {
-  const [currentChecker, setCurrentChecker] = useState(null);
-  const [idKilledChecker, setIdKilledChecker] = useState([]);
-  const [orderOfStep, setOrderOfStep] = useState(1);
-
-  /* --- */
   const selector = useSelector(storeSelector);
   const dispatch = useDispatch();
-  const { allChecker } = selector;
+  const { allChecker, order } = selector;
+
+  console.log(allChecker, order);
+  const [currentChecker, setCurrentChecker] = useState(null);
+  const [idKilledChecker, setIdKilledChecker] = useState([]);
+
+
+  // console.log("render start", order);
+
+  /* --- */
+
 
   const onKillChecked = (arrCoor) => {
     if (!idKilledChecker[0]) {
@@ -52,9 +59,11 @@ const Board = () => {
   const changeStepNumber = () => {
 
     const obj = (allChecker || []).find(c => c.id === currentChecker.id);
-    if (obj.col === currentChecker.col && obj.row === currentChecker.row) {
+    if (obj?.col === currentChecker.col && obj?.row === currentChecker.row) {
       return;
     }
+
+
 
     if (currentChecker.row && currentChecker.col) {
       const newCoordAfterMove = ([...allChecker] || []).map(c => {
@@ -67,19 +76,20 @@ const Board = () => {
       });
 
       const newCoordAfterKilled = onKillChecked(newCoordAfterMove);
+
       const withQueen = addStatusQueen(newCoordAfterKilled, currentChecker);
 
-      dispatch(setAllChecker(withQueen))
-
       if (idKilledChecker[0]) {
-
         if (checkerMustKillAgain(newCoordAfterKilled, currentChecker, setIdKilledChecker)) {
-          console.log("FIX", newCoordAfterKilled);
           return;
         }
       };
+
       setIdKilledChecker([]);
-      setOrderOfStep(prev => prev + 1);
+
+      dispatch(setOrder());
+      dispatch(setAllChecker(withQueen));
+
     }
   };
 
@@ -91,8 +101,6 @@ const Board = () => {
       color: evt.target.getAttribute("data-color"),
       role: evt.target.getAttribute("data-role"),
     };
-
-
 
     const checkersMustKillRes = checkersMustKill(allChecker, currCheck);
 
@@ -108,7 +116,7 @@ const Board = () => {
       setCurrentChecker(currCheck);
     }
 
-    if (!checkerMoveByOrder(orderOfStep, currCheck)) {
+    if (!checkerMoveByOrder(order, currCheck)) {
       return;
     }
     isDragStart(evt);
@@ -127,18 +135,22 @@ const Board = () => {
   // === OVER ===
 
   const onDragOverHandle = (evt) => {
+
     const isQueen = currentChecker.role === "queen";
-    if (!checkerCanMoveByColor(evt, orderOfStep, currentChecker)) return;
+    if (!checkerCanMoveByColor(evt, order, currentChecker)) return;
     if (!currentChecker.canMove) return;
     if (!onMoveAndKill(evt, allChecker, currentChecker, idKilledChecker, setIdKilledChecker)) return;
+
     onDragOver(evt);
   };
 
   // === ENTER ===
 
   const onDragEnterHandle = (evt) => {
-    if (!checkerCanMoveByColor(evt, orderOfStep, currentChecker)) return;
+
+    if (!checkerCanMoveByColor(evt, order, currentChecker)) return;
     onDragEnter(evt);
+
   };
 
   // === LEAVE ===
@@ -161,15 +173,15 @@ const Board = () => {
   /* --- */
 
   useEffect(() => {
-    const getColor = (orderOfStep) => {
-      if (orderOfStep % 2 === 0) {
+    const getColor = (order) => {
+      if (order % 2 === 0) {
         return CHECKER_COLOR.dark
       }
 
       return CHECKER_COLOR.white;
     }
 
-    const checkersMustKillRes = checkersMustKill(allChecker, { color: getColor(orderOfStep) });
+    const checkersMustKillRes = checkersMustKill(allChecker, { color: getColor(order) });
 
     if (checkersMustKillRes.mustKill) {
       setCurrentChecker(prev => ({ ...prev, mustKill: checkersMustKillRes?.mustKill }))
@@ -179,19 +191,33 @@ const Board = () => {
 
   /* --- */
 
-  const renderChecker = (i) => {
-    const checkerFound = (allChecker || []).find(e => e.id === i.toString());
-    const isQueen = (allChecker || []).find(e => e.id === i.toString() && e.queen);
-    const isUnderAttack = (currentChecker?.mustKill || []).includes(`${i}`);
+  const renderChecker = (r, c) => {
+    const checkerFound = (allChecker || []).find(e => e.row === r.toString() && e.col === c.toString());
+    const id = checkerFound?.id;
+    const isUnderAttack = (currentChecker?.mustKill || []).includes(id);
+
+    const isRender = r.toString() === checkerFound?.row && c.toString() === checkerFound?.col;
+    if (r === 6 && c === 5) {
+      // console.log(r, c, allChecker, checkerFound?.id);
+    }
+
+    if (r === 5 && c === 4) {
+      // console.log(r, c, allChecker, checkerFound?.id);
+    }
+
+    if (id === "17") {
+      // console.log("17", r, c);
+    }
+
 
     return (
       <Checker
-        isRender={checkerFound}
-        id={i}
+        isRender={checkerFound && isRender}
+        id={id || "a"}
         darkTeam={checkerFound?.color === "Dark"}
         isDragStart={isDragStartHandle}
         isDragEnd={isDragEndHandle}
-        isQueen={isQueen}
+        isQueen={checkerFound?.isQueen}
         isUnderAttack={isUnderAttack}
       />
     );
@@ -227,7 +253,7 @@ const Board = () => {
               onDragEnter={onDragEnterHandle}
               onDragLeave={onDragLeaveHandle}
               onDrop={onDropHandle}
-              key={i}
+              key={`${i}`}
 
               className={classNamesBoard}
               data-row={position.row}
@@ -235,7 +261,7 @@ const Board = () => {
               data-dark={colorIsDarkByIdBoard(i)}
             >
               {renderTitleCell(i)}
-              {renderChecker(i)}
+              {renderChecker(position.row, position.col)}
             </li>
           );
         })}

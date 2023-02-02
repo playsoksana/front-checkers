@@ -20,6 +20,7 @@ const Checker = (props) => {
   };
 
   const classNameChecker = classNames({
+    [styles.checkerDefault]: true,
     [styles.checker]: props.isRender,
     [styles.dark]: props.darkTeam,
     [styles.white]: !props.darkTeam,

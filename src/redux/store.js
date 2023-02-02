@@ -6,20 +6,25 @@ import {
 
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-
-const persistConfig = {
-    key: 'allChecker',
-    storage,
-};
-const rootReducer = combineReducers({
-    allChecker,
-});
-const persistedReducer = persistReducer(persistConfig, rootReducer);
-
 import thunkMiddleware from 'redux-thunk';
 import { composeWithDevTools } from "redux-devtools-extension";
 
-import allChecker from './reducer';
+import allChecker from './allChecker/reducer';
+import order from './order/reducer';
+
+const persistConfig = {
+    key: 'root',
+    storage,
+};
+
+const rootReducer = combineReducers({
+    allChecker,
+    order,
+});
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+
 
 
 const configureStore = () => {
