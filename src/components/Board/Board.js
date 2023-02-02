@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useStore, useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { setAllChecker } from '../../redux/action';
 
@@ -16,27 +16,25 @@ import addStatusQueen from "../../helpers/add-status-queen";
 
 import Checker from "../Сhecker/Checker";
 
-import { INITIAL_CHECKERS, CHECKER_COLOR } from "../../Types/Checker";
+import { CHECKER_COLOR } from "../../Types/Checker";
 
 import styles from "./Board.module.css";
 
 
 const storeSelector = (state) => ({
-  allChecker: state.allChecker,
+  allChecker: state.allChecker
 });
 
 const Board = () => {
   const [currentChecker, setCurrentChecker] = useState(null);
   const [idKilledChecker, setIdKilledChecker] = useState([]);
-  const [orderOfStep, setOrderOfStep] = useState(1)
+  const [orderOfStep, setOrderOfStep] = useState(1);
 
   /* --- */
-  const store = useStore();
   const selector = useSelector(storeSelector);
   const dispatch = useDispatch();
   const { allChecker } = selector;
 
-  console.log(888888, allChecker);
   const onKillChecked = (arrCoor) => {
     if (!idKilledChecker[0]) {
       return arrCoor;
@@ -53,13 +51,13 @@ const Board = () => {
 
   const changeStepNumber = () => {
 
-    const obj = allChecker.find(c => c.id === currentChecker.id);
+    const obj = (allChecker || []).find(c => c.id === currentChecker.id);
     if (obj.col === currentChecker.col && obj.row === currentChecker.row) {
       return;
     }
 
     if (currentChecker.row && currentChecker.col) {
-      const newCoordAfterMove = allChecker.map(c => {
+      const newCoordAfterMove = ([...allChecker] || []).map(c => {
         if (c.id === currentChecker.id) {
           c.row = currentChecker.row;
           c.col = currentChecker.col;
@@ -186,7 +184,6 @@ const Board = () => {
     const isQueen = (allChecker || []).find(e => e.id === i.toString() && e.queen);
     const isUnderAttack = (currentChecker?.mustKill || []).includes(`${i}`);
 
-
     return (
       <Checker
         isRender={checkerFound}
@@ -196,7 +193,6 @@ const Board = () => {
         isDragEnd={isDragEndHandle}
         isQueen={isQueen}
         isUnderAttack={isUnderAttack}
-
       />
     );
   }

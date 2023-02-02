@@ -1,5 +1,7 @@
 const SET_CHECKER = "SET_CHECKER";
+const RESET_CHECKER = "RESET_CHECKER";
 
 export {
     SET_CHECKER,
+    RESET_CHECKER
 }

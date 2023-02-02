@@ -30,6 +30,7 @@ const INITIAL_CHECKERS = [
     { id: '62', color: 'Dark', row: '8', col: '7', queen: false, }
 ];
 
+
 export {
     CHECKER_COLOR,
     INITIAL_CHECKERS,

@@ -1,18 +1,19 @@
-import { SET_CHECKER } from "./types";
+import { SET_CHECKER, RESET_CHECKER } from "./types";
 
 import { INITIAL_CHECKERS } from "../Types/Checker";
 
-const initialState = INITIAL_CHECKERS
+const initial = [...INITIAL_CHECKERS];
 
-
-function allChecker(state = initialState, { type, payloud }) {
+export default (state = initial, { type, payloud }) => {
+    console.log(payloud);
     switch (type) {
-        case SET_CHECKER:
-            return payloud
 
+        case SET_CHECKER:
+            return payloud;
+
+        case RESET_CHECKER:
+            return INITIAL_CHECKERS;
         default:
             return state
     }
 };
-
-export default allChecker;
