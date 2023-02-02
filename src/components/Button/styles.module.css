@@ -1,0 +1,14 @@
+.button {
+    width: 10rem;
+
+    padding: 0.5rem 2rem;
+    border-radius: 0.6rem;
+    border: 0.1rem solid black;
+
+    text-transform: uppercase;
+}
+
+.orangeTheme {
+    background-color: orange;
+    border: 0.1rem solid orange;
+}

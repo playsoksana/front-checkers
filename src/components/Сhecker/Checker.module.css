@@ -1,3 +1,7 @@
+.checkerDefault {
+    display: none;
+}
+
 .checker {
     position: relative;
     z-index: 5;

@@ -19,7 +19,7 @@ const checkersMustKill = (allChecker, currentChecker) => {
     const checkerThatPossibleKill = [];
 
     const selectedColor = currentChecker?.color;
-    const checkerByColor = allChecker.filter(e => e.color === selectedColor);
+    const checkerByColor = (allChecker || []).filter(e => e.color === selectedColor);
 
 
     for (let i = 0; i < checkerByColor.length; i++) {
@@ -87,7 +87,6 @@ const checkersMustKill = (allChecker, currentChecker) => {
     result.canMove = checkerWhoMustKill.includes(currentChecker?.id);
     result.mustKill = checkerThatPossibleKill;
 
-    console.log(result);
     return result;
 }
 

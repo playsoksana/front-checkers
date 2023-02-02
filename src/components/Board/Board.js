@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+
+import { setAllChecker } from '../../redux/allChecker/action';
+import { setOrder } from "../../redux/order/actions";
 
 import classNames from "../../lib/class_names";
 
@@ -13,18 +17,30 @@ import addStatusQueen from "../../helpers/add-status-queen";
 
 import Checker from "../Сhecker/Checker";
 
-import { INITIAL_CHECKERS, CHECKER_COLOR } from "../../Types/Checker";
+import { CHECKER_COLOR } from "../../Types/Checker";
 
 import styles from "./Board.module.css";
 
 
+const storeSelector = (state) => ({
+  allChecker: state.allChecker,
+  order: state.order,
+});
+
 const Board = () => {
-  const [allChecker, setAllChecker] = useState(INITIAL_CHECKERS);
+  const selector = useSelector(storeSelector);
+  const dispatch = useDispatch();
+  const { allChecker, order } = selector;
+
+  console.log(allChecker, order);
   const [currentChecker, setCurrentChecker] = useState(null);
   const [idKilledChecker, setIdKilledChecker] = useState([]);
-  const [orderOfStep, setOrderOfStep] = useState(1)
+
+
+  // console.log("render start", order);
 
   /* --- */
+
 
   const onKillChecked = (arrCoor) => {
     if (!idKilledChecker[0]) {
@@ -40,17 +56,17 @@ const Board = () => {
 
   /* --- */
 
-
-
   const changeStepNumber = () => {
 
-    const obj = allChecker.find(c => c.id === currentChecker.id);
-    if (obj.col === currentChecker.col && obj.row === currentChecker.row) {
+    const obj = (allChecker || []).find(c => c.id === currentChecker.id);
+    if (obj?.col === currentChecker.col && obj?.row === currentChecker.row) {
       return;
     }
 
+
+
     if (currentChecker.row && currentChecker.col) {
-      const newCoordAfterMove = allChecker.map(c => {
+      const newCoordAfterMove = ([...allChecker] || []).map(c => {
         if (c.id === currentChecker.id) {
           c.row = currentChecker.row;
           c.col = currentChecker.col;
@@ -60,18 +76,20 @@ const Board = () => {
       });
 
       const newCoordAfterKilled = onKillChecked(newCoordAfterMove);
+
       const withQueen = addStatusQueen(newCoordAfterKilled, currentChecker);
 
-      setAllChecker(withQueen);
       if (idKilledChecker[0]) {
-
         if (checkerMustKillAgain(newCoordAfterKilled, currentChecker, setIdKilledChecker)) {
-          console.log("FIX", newCoordAfterKilled);
           return;
         }
       };
+
       setIdKilledChecker([]);
-      setOrderOfStep(prev => prev + 1);
+
+      dispatch(setOrder());
+      dispatch(setAllChecker(withQueen));
+
     }
   };
 
@@ -87,12 +105,18 @@ const Board = () => {
     const checkersMustKillRes = checkersMustKill(allChecker, currCheck);
 
     if (checkersMustKillRes.mustKill) {
-      setCurrentChecker(prev => ({ ...prev, ...currCheck, mustKill: checkersMustKillRes?.mustKill, canMove: checkersMustKillRes?.canMove }))
-    } else {
+      const values = {
+        mustKill: checkersMustKillRes?.mustKill,
+        canMove: checkersMustKillRes?.canMove
+      }
+      setCurrentChecker(prev => ({ ...prev, ...currCheck, ...values }))
+    }
+
+    if (!checkersMustKillRes.mustKill) {
       setCurrentChecker(currCheck);
     }
 
-    if (!checkerMoveByOrder(orderOfStep, currCheck)) {
+    if (!checkerMoveByOrder(order, currCheck)) {
       return;
     }
     isDragStart(evt);
@@ -111,18 +135,22 @@ const Board = () => {
   // === OVER ===
 
   const onDragOverHandle = (evt) => {
+
     const isQueen = currentChecker.role === "queen";
-    if (!checkerCanMoveByColor(evt, orderOfStep, currentChecker)) return;
+    if (!checkerCanMoveByColor(evt, order, currentChecker)) return;
     if (!currentChecker.canMove) return;
     if (!onMoveAndKill(evt, allChecker, currentChecker, idKilledChecker, setIdKilledChecker)) return;
+
     onDragOver(evt);
   };
 
   // === ENTER ===
 
   const onDragEnterHandle = (evt) => {
-    if (!checkerCanMoveByColor(evt, orderOfStep, currentChecker)) return;
+
+    if (!checkerCanMoveByColor(evt, order, currentChecker)) return;
     onDragEnter(evt);
+
   };
 
   // === LEAVE ===
@@ -145,15 +173,15 @@ const Board = () => {
   /* --- */
 
   useEffect(() => {
-    const getColor = (orderOfStep) => {
-      if (orderOfStep % 2 === 0) {
+    const getColor = (order) => {
+      if (order % 2 === 0) {
         return CHECKER_COLOR.dark
       }
 
       return CHECKER_COLOR.white;
     }
 
-    const checkersMustKillRes = checkersMustKill(allChecker, { color: getColor(orderOfStep) });
+    const checkersMustKillRes = checkersMustKill(allChecker, { color: getColor(order) });
 
     if (checkersMustKillRes.mustKill) {
       setCurrentChecker(prev => ({ ...prev, mustKill: checkersMustKillRes?.mustKill }))
@@ -163,22 +191,34 @@ const Board = () => {
 
   /* --- */
 
-  const renderChecker = (i) => {
-    const checkerFound = allChecker.find(e => e.id === i.toString());
-    const isQueen = allChecker.find(e => e.id === i.toString() && e.queen);
-    const isUnderAttack = (currentChecker?.mustKill || []).includes(`${i}`);
+  const renderChecker = (r, c) => {
+    const checkerFound = (allChecker || []).find(e => e.row === r.toString() && e.col === c.toString());
+    const id = checkerFound?.id;
+    const isUnderAttack = (currentChecker?.mustKill || []).includes(id);
+
+    const isRender = r.toString() === checkerFound?.row && c.toString() === checkerFound?.col;
+    if (r === 6 && c === 5) {
+      // console.log(r, c, allChecker, checkerFound?.id);
+    }
+
+    if (r === 5 && c === 4) {
+      // console.log(r, c, allChecker, checkerFound?.id);
+    }
+
+    if (id === "17") {
+      // console.log("17", r, c);
+    }
 
 
     return (
       <Checker
-        isRender={checkerFound}
-        id={i}
+        isRender={checkerFound && isRender}
+        id={id || "a"}
         darkTeam={checkerFound?.color === "Dark"}
         isDragStart={isDragStartHandle}
         isDragEnd={isDragEndHandle}
-        isQueen={isQueen}
+        isQueen={checkerFound?.isQueen}
         isUnderAttack={isUnderAttack}
-
       />
     );
   }
@@ -213,7 +253,7 @@ const Board = () => {
               onDragEnter={onDragEnterHandle}
               onDragLeave={onDragLeaveHandle}
               onDrop={onDropHandle}
-              key={i}
+              key={`${i}`}
 
               className={classNamesBoard}
               data-row={position.row}
@@ -221,7 +261,7 @@ const Board = () => {
               data-dark={colorIsDarkByIdBoard(i)}
             >
               {renderTitleCell(i)}
-              {renderChecker(i)}
+              {renderChecker(position.row, position.col)}
             </li>
           );
         })}
