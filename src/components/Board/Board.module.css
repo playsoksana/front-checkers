@@ -10,6 +10,7 @@
 }
 
 .field {
+    position: relative;
     display: grid;
     grid-template-columns: repeat(8, 1fr);
     grid-template-rows: repeat(8, 1fr);
@@ -17,6 +18,34 @@
     height: 500px;
 
     margin: 0 auto;
+}
+
+.fieldWin::after {
+    position: absolute;
+    z-index: 100;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: rgba(89, 104, 104, 0.573);
+
+    color: rgb(112, 15, 15);
+    font-size: 6rem;
+    font-weight: 500;
+    cursor: not-allowed;
+}
+
+.fieldWinWhite::after {
+    content: "Win white";
+}
+
+.fieldWinDark::after {
+    content: "Win dark";
 }
 
 .dark {

@@ -32,15 +32,13 @@ const Board = () => {
   const dispatch = useDispatch();
   const { allChecker, order } = selector;
 
-  console.log(allChecker, order);
+
   const [currentChecker, setCurrentChecker] = useState(null);
   const [idKilledChecker, setIdKilledChecker] = useState([]);
+  const [win, setWin] = useState(null);
 
-
-  // console.log("render start", order);
 
   /* --- */
-
 
   const onKillChecked = (arrCoor) => {
     if (!idKilledChecker[0]) {
@@ -173,6 +171,22 @@ const Board = () => {
   /* --- */
 
   useEffect(() => {
+    const whiteChecker = allChecker.filter(e => e.color === CHECKER_COLOR.white);
+    const darkChecker = allChecker.filter(e => e.color === CHECKER_COLOR.dark);
+    console.log(whiteChecker.length, darkChecker.length);
+    if (whiteChecker.length === 0) {
+      setWin(CHECKER_COLOR.dark);
+    }
+    else if (darkChecker.length === 0) {
+      setWin(CHECKER_COLOR.white);
+    }
+
+    else {
+      setWin(null);
+    }
+  });
+
+  useEffect(() => {
     const getColor = (order) => {
       if (order % 2 === 0) {
         return CHECKER_COLOR.dark
@@ -183,8 +197,8 @@ const Board = () => {
 
     const checkersMustKillRes = checkersMustKill(allChecker, { color: getColor(order) });
 
-    if (checkersMustKillRes.mustKill) {
-      setCurrentChecker(prev => ({ ...prev, mustKill: checkersMustKillRes?.mustKill }))
+    if (checkersMustKillRes?.mustKill) {
+      setCurrentChecker(prev => ({ ...prev, mustKill: checkersMustKillRes.mustKill }))
     }
 
   }, [allChecker]);
@@ -219,6 +233,7 @@ const Board = () => {
         isDragEnd={isDragEndHandle}
         isQueen={checkerFound?.isQueen}
         isUnderAttack={isUnderAttack}
+        isDisabled={win}
       />
     );
   }
@@ -234,9 +249,15 @@ const Board = () => {
   }
 
   /* --- */
+  const fieldClassName = classNames({
+    [styles.field]: true,
+    [styles.fieldWin]: win,
+    [styles.fieldWinWhite]: win === CHECKER_COLOR.white,
+    [styles.fieldWinDark]: win === CHECKER_COLOR.dark,
+  });
 
   return (
-    <ul className={styles.field}>
+    <ul className={fieldClassName}>
       {Array(64)
         .fill(1)
         .map((e, i) => {
