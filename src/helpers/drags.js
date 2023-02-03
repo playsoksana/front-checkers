@@ -1,10 +1,5 @@
-
-
-let currentItem = null;
-
 export const isDragStart = (ev) => {
-  currentItem = ev.target;
-  ev.target.classList.add(`gavno`);
+  ev.target.classList.add(`shadow`);
   setTimeout(() => {
     ev.target.classList.add(`hide`)
   }, 0)
@@ -18,23 +13,22 @@ export const isDragEnd = (ev) => {
 
 
 export const onDragEnter = (e) => {
-  // console.log(1, e);
   e.target.classList.add('hovered')
 
 };
 
 export const onDragOver = (e) => {
+  // console.log(4);
   e.preventDefault();
 };
 
 
 export const onDragLeave = (e) => {
-  // console.log(3, e);
+  // console.log(3);
   e.target.classList.remove('hovered')
 };
 
-export const onDrop = (e) => {
-  e.target.append(currentItem);
+export const onDrop = (e) => { //при падении
   e.target.classList.remove('hovered');
 }
 
