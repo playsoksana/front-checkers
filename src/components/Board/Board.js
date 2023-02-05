@@ -7,7 +7,7 @@ import { setOrder } from "../../redux/order/actions";
 import classNames from "../../lib/class_names";
 
 import { isDragStart, isDragEnd, onDragOver, onDragEnter, onDragLeave, onDrop } from '../../helpers/drags';
-import { getCoordinateForChecker, colorIsDarkByIdBoard } from "../../helpers/get-values-for-board .js";
+import { getCoordinateForChecker } from "../../helpers/get-values-for-board .js";
 import checkerMoveByOrder from "../../helpers/checker-can-move-by-order";
 import onMoveAndKill from '../../helpers/on-move-and-kill';
 import checkerCanMoveByColor from "../../helpers/checker-can-move-by-color.js";
@@ -173,7 +173,7 @@ const Board = () => {
   useEffect(() => {
     const whiteChecker = allChecker.filter(e => e.color === CHECKER_COLOR.white);
     const darkChecker = allChecker.filter(e => e.color === CHECKER_COLOR.dark);
-    console.log(whiteChecker.length, darkChecker.length);
+    // console.log(whiteChecker.length, darkChecker.length);
     if (whiteChecker.length === 0) {
       setWin(CHECKER_COLOR.dark);
     }
@@ -211,18 +211,6 @@ const Board = () => {
     const isUnderAttack = (currentChecker?.mustKill || []).includes(id);
 
     const isRender = r.toString() === checkerFound?.row && c.toString() === checkerFound?.col;
-    if (r === 6 && c === 5) {
-      // console.log(r, c, allChecker, checkerFound?.id);
-    }
-
-    if (r === 5 && c === 4) {
-      // console.log(r, c, allChecker, checkerFound?.id);
-    }
-
-    if (id === "17") {
-      // console.log("17", r, c);
-    }
-
 
     return (
       <Checker
@@ -265,7 +253,7 @@ const Board = () => {
 
           const classNamesBoard = classNames({
             [styles.item]: true,
-            [styles.dark]: colorIsDarkByIdBoard(i),
+            [styles.dark]: (position.row + position.col) % 2 !== 0,
           });
 
           return (
@@ -279,7 +267,7 @@ const Board = () => {
               className={classNamesBoard}
               data-row={position.row}
               data-column={position.col}
-              data-dark={colorIsDarkByIdBoard(i)}
+              data-dark={(position.row + position.col) % 2 !== 0}
             >
               {renderTitleCell(i)}
               {renderChecker(position.row, position.col)}
